@@ -79,3 +79,47 @@ Nomor menyambung setelah baris 7 dihapus (baris 8–19 di tabel A jadi 7–18). 
 | 32 | D1 Data Anggota | Store | DFD 0, DFD 3.1, 3.4 | Proses 1 | Proses 3 (3.1, 3.4) | Komposit | Baku |
 | 33 | D2 Data Koleksi | Store | DFD 0, DFD 2.1, 2.2, 3.1, 3.2 | Proses 2.2, 3.1, 3.2 | Proses 2.1, 3.1, 4 | Komposit | Baku |
 | 34 | D3 Transaksi Fisik | Store | DFD 0, DFD 3.1–3.4 | Proses 3.1–3.4 | Proses 3.2, 3.4, 4 | Komposit | Baku (alias: dataTransaksiSirkulasi) |
+
+---
+
+## UC-02 · Notasi `@` di kamus data kita (2026-10-21)
+
+Masalahnya sama persis dengan temuan VS-12 yang kita berikan ke Kelompok 4. Harus beres sebelum dokumen validasi silang dikirim. Terkait: RV-M05-15, RV-M05-12.
+
+**Aturan pakai:** `@` ditulis **hanya di definisi record data store**, untuk menandai elemen yang membuat satu record unik. Di aliran data (termasuk aliran yang masuk/keluar store), elemen kunci tetap ditulis, tapi **tanpa** `@`.
+
+### Hapus `@` di struktur aliran berikut (`updates/` M05)
+
+| Struktur | Sekarang | Seharusnya |
+|---|---|---|
+| dataPendaftaran | `@NIM + NamaLengkap + ...` | `NIM + NamaLengkap + ...` |
+| dataVerifikasi | `@NIM + NamaLengkap + ...` | `NIM + NamaLengkap + ...` |
+| informasiKoleksiBuku | `@KodeBuku + Judul + ...` (entri), `@ISBN`, `@KodeEksemplar` (penguraian) | tanpa `@` |
+| dataKoleksiBaru | `@KodeBuku + Judul + ...` | tanpa `@` |
+| dataTransaksiFisik | `@NIM + @KodeBuku + ...` | tanpa `@` |
+| dataTransaksiPeminjaman | `@NIM + @KodeBuku + ...`; penguraian `1{@KodeEksemplar}3` | tanpa `@` |
+| dataTransaksiPengembalian | `@NIM + @KodeBuku + ...` | tanpa `@` |
+| statusTransaksiDanBukti | `... + @NIM + @KodeBuku + ...` | tanpa `@` |
+| catatanDenda | `@NIM + @KodeBuku + ...`; penguraian `@IDTransaksi + @NIM + ...` | tanpa `@` |
+| buktiPengembalianDanDenda | `NoBukti + @NIM + @KodeBuku + ...` | tanpa `@` |
+| permintaanPerpanjangan | `@NIM + @KodeBuku + ...`; penguraian `@IDTransaksi + @NIM + @KodeEksemplar` | tanpa `@` |
+| dataKeterlambatan | `@NIM + @KodeBuku + ...` | tanpa `@` |
+
+### Tambahkan `@` di record store (sekarang belum ada sama sekali)
+
+```
+D1 Data Anggota    = {RecordAnggota}
+RecordAnggota      = @NIM + NamaLengkap + ProgramStudi + EmailKampus + TanggalDaftar + StatusAnggota
+
+D2 Data Koleksi    = {RecordEksemplar}
+RecordEksemplar    = @KodeEksemplar + ISBN + JudulBuku + Pengarang + Penerbit + TahunTerbit + LokasiRak + StatusEksemplar
+
+D3 Transaksi Fisik = {RecordTransaksi}
+RecordTransaksi    = @IDTransaksi + NIM + KodeEksemplar + TanggalPinjam + TanggalJatuhTempo + JumlahPerpanjangan
+                     + (TanggalKembali) + (JumlahHariTerlambat) + (JumlahDenda) + (TanggalBayar) + StatusTransaksi + StatusDenda
+```
+
+Di RecordTransaksi, `NIM` dan `KodeEksemplar` **tidak** diberi `@`. Keduanya rujukan ke record di D1/D2, bukan kunci D3. (Versi lengkap ada di v0.2: sheet `3_Entri_Store`.)
+
+- [ ] Hapus `@` di 12 struktur aliran di atas (entri komposit + penguraian)
+- [ ] Tambah 3 entri store dengan `@` sesuai blok di atas
