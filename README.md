@@ -4,6 +4,7 @@ Catatan kerja tugas bertahap PRPL (Polban D3 TI) untuk studi kasus SILAPUS. Repo
 
 | File | Isi |
 |---|---|
+| [URGENT_CHANGES.md](URGENT_CHANGES.md) | **Perubahan mendesak** yang harus segera diterapkan (UC-xx) |
 | [BACKLOG.md](BACKLOG.md) | To-do & status per modul |
 | [revisions-recommendations/](revisions-recommendations/README.md) | **Rekomendasi revisi per modul** (M01–M06), dengan checklist yang bisa dicentang |
 | [BASELINE_PENAMAAN.md](BASELINE_PENAMAAN.md) | Nama resmi proses, flow, store. Cek di sini sebelum menulis nama apa pun |
