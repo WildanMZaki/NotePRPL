@@ -9,6 +9,7 @@ Catatan kerja tugas bertahap PRPL (Polban D3 TI) untuk studi kasus SILAPUS. Repo
 | [BASELINE_PENAMAAN.md](BASELINE_PENAMAAN.md) | Nama resmi proses, flow, store. Cek di sini sebelum menulis nama apa pun |
 | [AUDIT_BALANCING.md](AUDIT_BALANCING.md) | Audit balancing lintas modul (AUD-A/B/C/D) + rencana perbaikan |
 | [EVALUASI_DATA_DICTIONARY.md](EVALUASI_DATA_DICTIONARY.md) | List flow per diagram vs kamus data, koreksi hasil Gemini |
+| [validasi-silang/PANDUAN_CEK_VALIDASI.md](validasi-silang/PANDUAN_CEK_VALIDASI.md) | Cara cek temuan validasi silang (baku/sinonim, notasi, langkah cek VS-10/12/13/15/17) |
 | [TEMUAN_DAN_REVISI.md](TEMUAN_DAN_REVISI.md) | Peer review, audit internal, revision history |
 | [generator/](generator/) | `m05_data.py` (isi kamus data) → `build_m05.py` (xlsx + docx); `build_validasi_k4.py` |
 
