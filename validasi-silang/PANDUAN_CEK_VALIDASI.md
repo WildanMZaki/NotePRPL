@@ -115,3 +115,65 @@ Sebelum dokumen validasi silang dikirim ke Kelompok 4, pastikan dua temuan ini *
 | VS-10 inventaris | Store D1–D3 dan 16 flow store tidak ada di inventaris | RV-M05-12 |
 
 Ternyata keempatnya juga terjadi di kamus data kita.
+
+---
+
+## 6. Opsi Pengganti VS-12 (ditambahkan 2026-10-22)
+
+VS-12 (`@`) ditunda karena kamus data kita juga punya masalah yang sama (UC-02, RV-M05-15). Bagian 4 tetap dipertahankan sebagai acuan. Berikut 3 opsi pengganti yang **mudah dicek** dan **tidak terjadi di kamus data kita** (sudah dicek terhadap `updates/` M05). Pilih satu.
+
+| Opsi | Temuan | Severitas | Kenapa gampang | Aman untuk kita? |
+|---|---|---|---|---|
+| A | VS-14 · Notasi `{}` dipakai untuk pilihan | Sedang | Cukup cari pola `{ ... \| ... }` | ✅ kita pakai `[ ]` untuk pilihan (`StatusEksemplar`, `PeringkatPeminjaman`) |
+| B | VS-16 · Satu elemen, panjang/domain berbeda | Sedang | Bandingkan definisi elemen yang sama di beberapa tempat | ✅ `NIM`, `KodeEksemplar`, `IDTransaksi`, tanggal kita konsisten. Cek ulang kalau ada tambahan baru |
+| C | VS-06 · Nama aliran `triggerStatusBuku` | Sedang | Satu nama, satu aturan | ✅ semua nama aliran kita kata benda |
+
+### Opsi A · VS-14 · Notasi pengulangan dipakai untuk pilihan · Sedang
+- **Aturan:** Modul 5 §1.4 Gambar 31: `{}` = berulang, `[]` = memilih satu alternatif, `|` = pemisah alternatif.
+- **Langkah cek:**
+  1. Cari semua `{` di bagian penguraian.
+  2. Kalau isi kurung kurawal memuat `|` (daftar pilihan), itu salah notasi: maksudnya memilih satu, tapi ditulis sebagai pengulangan.
+  3. Cari juga `n{x}m` yang angkanya tidak masuk akal untuk elemennya.
+- **Bukti di Kelompok 4:**
+  - `hari = { 1 | 2 | ... | 31 }`, `bulan = { 1 | 2 | … | 12 }`, `tahun = { 2025 | … | 2500 }` (penguraian buktiPeminjaman, dataPengembalianBuku, dll.). Ditulis begini, artinya "hari adalah deretan angka 1, 2, ..., 31 yang berulang", bukan "salah satu dari 1–31".
+  - `Pengarang = 1{huruf}3` (penguraian Data Koleksi) berarti nama pengarang hanya 1–3 huruf. Kemungkinan maksudnya 1–3 orang pengarang, yang di entri ditulis `(1{Pengarang}3)`.
+- **Rekomendasi:** `Hari = [01 | 02 | ... | 31]` atau `Hari = 2{angka}2` dengan domain 01–31 di tabel elemen. `Pengarang = 1{karakter}50`; jumlah pengarang tetap `1{Pengarang}3` di struktur Data Koleksi.
+
+### Opsi B · VS-16 · Satu elemen didefinisikan berbeda · Sedang
+- **Aturan:** Modul 5 §1.8 (satu konsep satu definisi), §1.11 ("format, domain, dan contoh data tidak saling bertentangan").
+- **Langkah cek:**
+  1. Kelompok 4 menulis ulang definisi elemen di setiap penguraian. Ambil satu elemen (misal `NamaDepan`) dan cari semua kemunculan definisinya.
+  2. Bandingkan panjang `n{x}m`, wajib/opsional, dan rentang nilainya.
+  3. Bandingkan juga dengan tabel "Mendefinisikan Elemen".
+  4. Kalau ada yang beda, itu temuan. Tulis keduanya beserta lokasinya.
+- **Bukti di Kelompok 4:**
+
+| Elemen | Definisi 1 | Definisi 2 |
+|---|---|---|
+| NamaDepan | `1{huruf}20` (buktiPeminjaman, formPendaftaran) | `1{huruf}30` (Data Anggota) |
+| NamaBelakang | wajib: `NamaDepan + NamaBelakang` | opsional: `NamaDepan + (NamaBelakang)` (Data Anggota) |
+| TotalDenda | `1{angka}6` (infoDenda, buktiPengembalian) | `1{angka}8` (Data Transaksi) |
+| tahun | `{ 2025 \| … \| 2500 }` | `{ 2023 \| … \| 2500 }` dan `4{angka}4` |
+| Hari | `{ 1 \| ... \| 31 }` | `2{angka}2` (Data Anggota) |
+
+- **Dampak:** nama dengan 25 huruf valid di Data Anggota tapi tidak valid di formulir pendaftaran. Denda Rp1.500.000 (7 digit) bisa disimpan di Data Transaksi, tapi tidak bisa ditampilkan di bukti.
+- **Rekomendasi:** definisikan satu kali di tabel elemen, lalu penguraian lain cukup merujuk nama elemennya.
+
+### Opsi C · VS-06 · Nama aliran `triggerStatusBuku` · Sedang
+- **Aturan:** Modul 1–3 tabel komponen DFD (Data Flow: "kata benda atau struktur data, bukan aktivitas"); Modul 4 §1.8 ("nama aliran menjelaskan informasi", DFD logis tanpa istilah teknis).
+- **Langkah cek:**
+  1. Baca semua nama aliran di DFD dan inventaris.
+  2. Untuk tiap nama, tanya: apakah nama ini menyebut **informasi apa** yang mengalir, atau menyebut **sinyal/aksi**?
+  3. Kata seperti trigger, sinyal, perintah, request, simpan, kirim menandakan aksi/kontrol, sehingga jadi temuan.
+- **Bukti di Kelompok 4:** aliran 3.3 → 3.4 bernama `triggerStatusBuku` (inventaris No 15). Penjelasan di entrinya sendiri: "data status mutakhir dari buku yang baru saja dikembalikan". Artinya isinya memang informasi status, tapi namanya menggambarkan pemicu.
+- **Rekomendasi:** ganti jadi `statusBukuKembali` atau `pembaruanStatusKoleksi`. Tulis juga ruas kiri strukturnya: `statusBukuKembali = KodeBuku + [Tersedia | Hilang | Rusak]` (sekaligus menutup VS-21).
+
+### Ringkasan pilihan 5 item
+
+| Status | Item |
+|---|---|
+| Dipakai | VS-10, VS-13, VS-15, VS-17 |
+| Ditunda | VS-12 (bagian 4, kita juga kena) |
+| Pengganti | pilih satu dari Opsi A (VS-14), B (VS-16), atau C (VS-06) |
+
+Catatan: VS-10, VS-13, dan VS-15 juga terjadi di kamus data kita (bagian 5). Bedanya, perbaikannya sudah tercatat di UC-01 dan RV-M05-12/14/16. Kalau ingin aman total, ganti juga salah satunya dengan opsi yang tersisa.
