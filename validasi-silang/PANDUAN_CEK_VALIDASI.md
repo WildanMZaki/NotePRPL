@@ -200,3 +200,26 @@ Format Lampiran C. Bahasa dibuat singkat dan mudah dipahami.
 | VS-14 | M05 | Penguraian hari, bulan, tahun, Pengarang | Notasi | Pilihan ditulis pakai `{}` (artinya berulang), contoh `hari = {1 \| 2 \| ... \| 31}`. Seharusnya `[]`. `Pengarang = 1{huruf}3` berarti nama cuma 1–3 huruf. | Sedang | Pakai `[]` untuk pilihan. Pengarang ditulis `1{karakter}50`. | Open |
 | VS-16 | M05 | NamaDepan, NamaBelakang, TotalDenda, tahun | Domain beda | Elemen yang sama ditulis beda: NamaDepan 20 vs 30 huruf, NamaBelakang wajib vs opsional, TotalDenda 6 vs 8 digit, tahun mulai 2025 vs 2023. | Sedang | Tulis definisi sekali di tabel elemen, yang lain cukup merujuk. | Open |
 | VS-06 | M04 | DFD L1 Proses 3: aliran 3.3 → 3.4 | Penamaan | Nama `triggerStatusBuku` menggambarkan aksi/pemicu, padahal isinya data status buku. Nama aliran harus kata benda. | Sedang | Ganti jadi `statusBukuKembali`. | Open |
+
+---
+
+## 8. Opsi Tambahan Severitas Tinggi (M05) · ditambahkan 2026-10-22
+
+Temuan Tinggi yang murni M05 hanya tiga, dan semuanya sudah dipakai (VS-10, VS-13, VS-15). Temuan Tinggi lain yang **memakai bukti kamus data M05** adalah VS-04: struktur data yang masuk ke 3.2 tidak cukup untuk menghasilkan output 3.2.
+
+### Opsi D · VS-04 · Data masuk tidak cukup untuk menghitung denda (gray hole) · Tinggi
+- **Aturan:**
+  - Modul 4 §1.6, gray hole: output tidak dapat dijelaskan dari input.
+  - Modul 5 §1.10: setiap elemen yang dipakai harus terlacak ke definisi dan sumbernya.
+  - Modul 5 Langkah 5.1: telusuri input–output satu proses ke kamus data.
+- **Langkah cek:**
+  1. Pilih proses 3.2 Hitung Denda. Dari DFD L1-P3, inputnya hanya `statusKeterlambatan` (dari 3.1). 3.2 tidak membaca data store.
+  2. Buka struktur input di kamus data: `statusKeterlambatan = [Terlambat | Tepat waktu]`. Isinya hanya satu nilai status.
+  3. Buka struktur output: `infoDenda = IDTransaksi + IDAnggota + NamaAnggota + TerlambatHari + TotalDenda`.
+  4. Tanya untuk tiap elemen output: dari mana 3.2 mendapatkannya? `TerlambatHari` butuh TanggalJatuhTempo dan TanggalKembali, sedangkan `IDTransaksi`, `IDAnggota`, `NamaAnggota` juga tidak ada di input. Tidak ada satu pun yang tersedia, jadi itu temuan.
+- **Dampak:** proses 3.2 tidak bisa ditulis process spec-nya di M06, karena datanya tidak ada.
+- **Aman untuk kita?** Untuk kasus ini aman. Aliran kita yang setara, `dataKeterlambatan` (3.2 → 3.3), sudah membawa `TanggalJatuhTempo + TanggalKembali + JumlahHariTerlambat`. Tapi kita sendiri punya gray hole lain di 3.1 dan 3.3 (AUD-B-07, AUD-B-11). Itu jenis temuan yang sama, jadi siapkan jawabannya kalau Kelompok 4 membalikkan: "sudah tercatat di audit internal, perbaikan berupa flow baca `peminjamAktif`".
+
+| ID | Artefak | Lokasi | Jenis | Deskripsi Berbasis Bukti | Severitas | Rekomendasi | Status |
+|---|---|---|---|---|---|---|---|
+| VS-04 | M05 + M04 | Proses 3.2 Hitung Denda; struktur statusKeterlambatan & infoDenda | Gray hole | Input 3.2 hanya `statusKeterlambatan = [Terlambat \| Tepat waktu]`, tapi outputnya `infoDenda` berisi IDTransaksi, IDAnggota, NamaAnggota, TerlambatHari, TotalDenda. Data itu tidak ada di input, dan 3.2 tidak membaca data store. | Tinggi | Tambahkan IDTransaksi, IDAnggota, TanggalJatuhTempo, TanggalKembali ke `statusKeterlambatan`, atau beri 3.2 akses baca Data Transaksi. | Open |
