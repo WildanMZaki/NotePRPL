@@ -196,3 +196,39 @@ Sebagian besar hasil Gemini sudah benar, terutama hitungan 15 flow Tipe 1 di Lev
 3. **Irfan + Rere:** cocokkan tabel di atas dengan hasil Gemini. Isi Periode/Volume yang masih berupa asumsi bila ada data lebih baik.
 4. Revisi Context Diagram (AUD-B-01/02), lalu alias "(CD)" di sheet Alias bisa dihapus.
 5. Pindahkan isi `..._DataDictionary_draft.docx` ke dokumen utama, ekspor PDF, buat `_Review.pdf`.
+
+---
+
+## Cek Ulang: `updates/PRPL_M05_2B_RajinBelajar_DataDictionary.pdf` (2026-10-21 malam)
+
+Versi ini disebut **v0.1b**: revisi kelompok atas v0.1, disusun terpisah dari draft generator v0.2.
+
+### Yang membaik
+- **Inventaris Tipe 1** sekarang 19 entri, dan nama flow Tipe 1 sudah sama dengan DFD (`statusPendaftaran`, `dataVerifikasi`, `statusTransaksiDanBukti`, `buktiPengembalianDanDenda`, `dataKeterlambatan`, ...).
+- **Entri komposit** naik dari 7 ke 14. Periode dan volume diisi sebagai estimasi.
+- **Bagian "Menguraikan Struktur Data" sudah terisi** (7 struktur). Format `KodeEksemplar` dan `IDTransaksi` di penguraian sudah konsisten dengan contohnya.
+- Alias tidak lagi memakai nama tabel fisik (`tb_...`). Aturan "reservasi" dan "max 3 kali" sudah dihapus.
+
+### Status ketentuan K-01..K-17
+
+| # | Ketentuan | v0.1 | v0.1b (updates) |
+|---|---|---|---|
+| K-01 | Seluruh flow & store di inventaris | 12/34 | ◐ 19/34. Tipe 2 masih 0/16, dan **store D1–D3 malah hilang** |
+| K-02 | Nama = DFD | ✗ | ◐ Tipe 1 sudah, tapi penguraian masih `formTransaksiPinjam`, `formTransaksiKembali`, `buktiKonfirmasiDenda`, `laporanSirkulasiBulanan`; ada entri basi `infoKatalog/Ketersediaan` |
+| K-03 | Nomor proses benar | ✗ | ◐ `dataPendaftaran` masih "Proses 1.1" |
+| K-04 | Kolom Status Entri | ✗ | ✗ tidak berubah |
+| K-05 | Entri komposit tiap flow | 7 | ◐ 14 (13 valid + 1 basi) dari 31 |
+| K-06 | Entri store | ✗ | ✗ **mundur**: store tidak ada sama sekali |
+| K-07 | Penguraian sampai elementer | kosong | ◐ 7 struktur, nama lama, isinya beda dengan entri komposit |
+| K-08 | Elemen lengkap (null, sumber) | 10 | ✗ tidak berubah (10 elemen, tanpa null/sumber) |
+| K-09 | Format vs contoh | ✗ | ◐ penguraian konsisten; tabel elemen belum diubah |
+| K-10 | `@` hanya untuk kunci store | ✗ | ✗ **memburuk**: `@NIM + @KodeBuku` ada di hampir semua flow |
+| K-11 | Satu konsep satu nama | ✗ | ✗ **memburuk** (lihat RV-M05-14) |
+| K-12 | Tanpa detail implementasi | ✗ | ✅ alias `tb_*` hilang |
+| K-13 | TBD dengan pemilik | ✗ | ◐ angka "3 kali" dihapus, tapi bagian TBD tidak ada |
+| K-14 | Aturan dalam cakupan | ✗ | ◐ reservasi hilang; "Bebas Denda/Diblokir" masih ada; tambah "buku rusak/hilang sesuai ketentuan" yang tidak jelas |
+| K-15 | Validasi silang | kosong | ✗ masih kosong |
+| K-16 | Berkas & nama file | ✗ | ◐ PDF sudah `RajinBelajar`; `_Review.pdf` belum |
+| K-17 | Refleksi | ✗ | ✗ |
+
+Ringkas: **1 tertutup** (K-12), **9 sebagian**, **7 belum/memburuk**. Ditambah **10 masalah baru** (RV-M05-10..19 di [`revisions-recommendations/M05-data-dictionary.md`](revisions-recommendations/M05-data-dictionary.md)).

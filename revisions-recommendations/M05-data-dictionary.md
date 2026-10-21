@@ -14,6 +14,19 @@ Detail evaluasi: [`../EVALUASI_DATA_DICTIONARY.md`](../EVALUASI_DATA_DICTIONARY.
 - [ ] RV-M05-08 · Hapus alias "(CD)" setelah CD direvisi · P2
 - [ ] RV-M05-09 · Refleksi Modul 5 + hapus xlsx lama `Kelompok6` · P3
 
+**Tambahan dari cek `updates/` 2026-10-21 (v0.1b):**
+- [ ] RV-M05-20 · Putuskan basis dokumen: lanjut v0.1b atau pindah ke v0.2 · **P1** (keputusan)
+- [ ] RV-M05-10 · `catatanDenda` arah & maknanya terbalik · **P1**
+- [ ] RV-M05-11 · Hapus entri basi `infoKatalog/Ketersediaan` · **P1**
+- [ ] RV-M05-12 · Store D1–D3 hilang dari inventaris, tanpa entri store · **P1**
+- [ ] RV-M05-13 · Penguraian masih pakai nama lama & beda isi dengan entri · **P1**
+- [ ] RV-M05-14 · Satu konsep banyak nama · **P1**
+- [ ] RV-M05-16 · `dataTransaksiFisik` belum jadi [peminjaman \| pengembalian]; kardinalitas buku tidak konsisten · **P1**
+- [ ] RV-M05-17 · Flow bertanda "Elementer" tidak didefinisikan di mana pun · **P1**
+- [ ] RV-M05-15 · `@` di hampir semua flow · P2
+- [ ] RV-M05-18 · Elemen baru belum ada di tabel elemen · P2
+- [ ] RV-M05-19 · Nilai hitungan sistem dijadikan input; `IDPetugas` tidak tersimpan · P2
+
 ---
 
 ### RV-M05-02 · Keputusan desain yang perlu disetujui · P1
@@ -58,3 +71,75 @@ Alias seperti "Informasi Katalog (CD)" hanya ada karena CD belum direvisi. Setel
 
 ### RV-M05-09 · Kerapian · P3
 Jawab 3 refleksi Modul 5. Hapus `progress/PRPL_M05_2B_Kelompok6_DataDictionary.xlsx` setelah v0.2 disetujui.
+
+
+---
+
+## Temuan dari `updates/PRPL_M05_2B_RajinBelajar_DataDictionary.pdf` (v0.1b)
+
+Status ketentuan K-01..K-17 ada di [`../EVALUASI_DATA_DICTIONARY.md`](../EVALUASI_DATA_DICTIONARY.md) bagian "Cek Ulang".
+
+### RV-M05-20 · Basis dokumen · P1 (keputusan)
+v0.1b dan v0.2 (generator) sekarang berjalan **terpisah**, jadi ada dua versi kebenaran, persis masalah file `.bpm` dulu. Rekomendasi: **v0.2 sebagai basis**, karena lengkap 34/34, sudah divalidasi otomatis, dan tidak sirkular. Tambahan bagus dari v0.1b dipindahkan ke `m05_data.py`:
+- `NomorPanggil` di hasil pencarian
+- `Kategori` (atau samakan dengan `Subjek`)
+- `JumlahEksemplar` di `dataKoleksiBaru`
+- `KondisiBuku` [Baik | Rusak] saat pengembalian. Ini menjawab "bagaimana eksemplar bisa jadi Rusak" lewat 3.2.
+- Teks alias, periode, dan volume yang lebih natural
+
+Kalau kelompok memilih lanjut v0.1b, semua RV-M05-10..19 wajib dikerjakan manual.
+
+### RV-M05-10 · `catatanDenda` terbalik · P1
+- **Sekarang (v0.1b):** inventaris No 13 dan entri No 10 menulis arus "Proses 3, Proses 3.3 -> Petugas Perpustakaan", isinya rincian denda (`TotalDenda`, `StatusDenda`).
+- **DFD:** `catatanDenda` = **Petugas → 3.3** (input), yaitu catatan pembayaran denda dari Petugas. Rincian denda untuk Petugas adalah `buktiPengembalianDanDenda`.
+- **Seharusnya:** `catatanDenda = IDTransaksi + JumlahDibayar + TanggalBayar`, arus Petugas Perpustakaan → 3.3. Isi entri lama pindah ke `buktiPengembalianDanDenda`.
+
+### RV-M05-11 · `infoKatalog/Ketersediaan` · P1
+Nama ini berasal dari file Rere sebelum merge. Di DFD master hanya ada `informasiKoleksiBuku` (PR-03). Hapus inventaris No 7 dan entri No 4, lalu gabungkan isinya (JumlahEksemplar, LokasiRak) ke `informasiKoleksiBuku`. Kalau dipertahankan, Level 0 dan Level 1 jadi tidak balance lagi.
+
+### RV-M05-12 · Store hilang · P1
+v0.1 masih punya 3 baris store; v0.1b tidak punya sama sekali, dan tidak ada entri store (record, kunci, retensi, akses; Modul 5 §1.3). Tambahkan D1 Data Anggota, D2 Data Koleksi, D3 Transaksi Fisik, plus 16 flow Tipe 2 (daftarnya di EVALUASI).
+
+### RV-M05-13 · Penguraian ≠ entri · P1
+
+| Flow | Entri komposit v0.1b | Penguraian v0.1b |
+|---|---|---|
+| informasiKoleksiBuku | `@KodeBuku + Judul + Pengarang + Penerbit + TahunTerbit + Kategori + StatusKetersediaan` | `{HasilPencarian}`, `HasilPencarian = @ISBN + JudulBuku + ... + 1{DetailEksemplar}` |
+| dataTransaksiPeminjaman | `@NIM + @KodeBuku + TanggalPinjam + TanggalJatuhTempo + IDPetugas` | judul `formTransaksiPinjam = @NIM + 1{@KodeEksemplar}3 + TanggalPinjam` |
+| dataTransaksiPengembalian | `@NIM + @KodeBuku + TanggalKembali + KondisiBuku + IDPetugas` | judul `formTransaksiKembali = @KodeEksemplar + TanggalKembali + (KondisiFisikBuku)` |
+| permintaanPerpanjangan | `@NIM + @KodeBuku + TanggalPengajuan` | `@IDTransaksi + @NIM + @KodeEksemplar` |
+| catatanDenda | rincian denda | judul `buktiKonfirmasiDenda` (pembayaran) |
+| laporanBulanan | `Periode + ... + {BukuPalingBanyakDipinjam}` | judul `laporanSirkulasiBulanan = PeriodeLaporan + ...` |
+
+Penguraian harus menguraikan struktur **yang sama** dengan entri komposit, dengan nama yang sama.
+
+### RV-M05-14 · Satu konsep banyak nama · P1
+
+| Konsep | Nama di v0.1b | Pilih satu (v0.2) |
+|---|---|---|
+| Kode eksemplar | KodeBuku, KodeEksemplar | KodeEksemplar (KodeBuku = alias) |
+| Judul | Judul, JudulBuku | JudulBuku |
+| Topik | Kategori | Subjek atau Kategori, pilih salah satu |
+| Status eksemplar | StatusKetersediaan, StatusEksemplar | StatusEksemplar |
+| Nomor bukti | NoBukti, IDTransaksi | IDTransaksi (atau definisikan NoBukti terpisah, terkait TBD-06) |
+| Status denda | StatusDenda [Belum Dibayar \| Lunas], StatusPembayaran, StatusDenda [Tanpa Denda \| Belum Lunas \| Lunas] | StatusDenda dengan satu domain |
+| Kondisi buku | KondisiBuku, KondisiFisikBuku | satu nama |
+| Periode | Periode, PeriodeLaporan | PeriodeLaporan |
+| Tarif | TarifDenda (di struktur), "Rp 1.000" (di elemen) | parameter TarifDendaHarian |
+
+### RV-M05-15 · `@` di flow · P2
+`@NIM + @KodeBuku` muncul di 10+ struktur flow, bahkan `1{@KodeEksemplar}3` di dalam iterasi. `@` hanya untuk kunci record data store (Modul 5 Langkah 4.4).
+
+### RV-M05-16 · `dataTransaksiFisik` & kardinalitas · P1
+- `dataTransaksiFisik = @NIM + @KodeBuku + JenisTransaksi + TanggalTransaksi + IDPetugas` bukan gabungan dari dua anaknya. Akibatnya baris balancing No 1 Proses 3 di M04 tidak sah. Seharusnya `dataTransaksiFisik = [dataTransaksiPeminjaman | dataTransaksiPengembalian]`.
+- Entri `dataTransaksiPeminjaman` berisi 1 KodeBuku, tapi penguraiannya `1{KodeEksemplar}3`. Ini temuan yang sama persis dengan yang kita berikan ke Kelompok 4 (VS-13). Kalau tidak diperbaiki, mereka bisa membalikkannya ke kita.
+
+### RV-M05-17 · Flow "Elementer" tanpa definisi · P1
+`statusPendaftaran`, `statusKeaktifan`, `dataPencarian`, `statusPerpanjangan`, `permintaanLaporan` diberi status "Elementer" di inventaris. Tapi kelimanya tidak punya entri komposit dan tidak ada di tabel elemen. Flow boleh elementer, asalkan didefinisikan sebagai elemen (domain, contoh). Strukturnya sudah ada di v0.2. Contohnya, `statusPerpanjangan` sebenarnya komposit (jatuh tempo baru + status).
+
+### RV-M05-18 · Elemen baru tidak terdefinisi · P2
+Belum ada di tabel elemen: IDPetugas, JenisTransaksi, TanggalTransaksi, TanggalPengajuan, NoBukti, TarifDenda, KondisiBuku, StatusPembayaran, Kategori, JumlahEksemplar, StatusKetersediaan, BukuPalingBanyakDipinjam, NomorPanggil, NoWhatsapp, serta karakter dasar (karakterNama, karakterTeks, karakterEmail, huruf, angka). Modul 5 §1.10: setiap elemen yang dipakai harus didefinisikan.
+
+### RV-M05-19 · Nilai hitungan sebagai input · P2
+- `dataTransaksiPeminjaman` (input dari Petugas) memuat `TanggalJatuhTempo`, padahal nilai itu dihitung sistem (TanggalPinjam + 7 hari). Begitu juga `TanggalTransaksi`/`TanggalKembali` yang seharusnya tanggal sistem. Ini membingungkan process spec: siapa yang menghitung?
+- `IDPetugas` dikirim di tiga flow, tapi tidak disimpan di store mana pun dan tidak dipakai proses mana pun. Aturan "petugas yang login" adalah detail implementasi (Modul 4 §1.8). Hapus, atau tambahkan ke RecordTransaksi kalau memang perlu dilacak.

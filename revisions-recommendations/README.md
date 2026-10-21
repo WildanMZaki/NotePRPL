@@ -13,7 +13,7 @@ Rujukan audit asal (AUD-xx) ada di [`../AUDIT_BALANCING.md`](../AUDIT_BALANCING.
 | M02 Event & Context | [M02-event-context.md](M02-event-context.md) | 11 | 6 | 3 | 2 | | ⏳ |
 | M03 DFD Level 0 | [M03-dfd-level0.md](M03-dfd-level0.md) | 7 | 4 | 3 | 0 | | ⏳ |
 | M04 DFD Decomposition | [M04-dfd-decomposition.md](M04-dfd-decomposition.md) | 12 | 8 | 3 | 1 | | ⏳ |
-| M05 Data Dictionary | [M05-data-dictionary.md](M05-data-dictionary.md) | 9 | 5 | 3 | 1 | | 🔄 draft v0.2 |
+| M05 Data Dictionary | [M05-data-dictionary.md](M05-data-dictionary.md) | 20 | 13 | 6 | 1 | | 🔄 v0.2 (generator) vs v0.1b (`updates/`); +11 item 2026-10-21 |
 | M06 Process Spec (persiapan) | [M06-process-spec-prep.md](M06-process-spec-prep.md) | 5 | 3 | 2 | 0 | | ⏳ |
 
 P1 = memblokir balancing/keterlacakan, kerjakan dulu · P2 = sebelum M06 · P3 = kerapian
