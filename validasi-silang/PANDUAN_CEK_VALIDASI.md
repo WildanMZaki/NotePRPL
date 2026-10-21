@@ -177,3 +177,26 @@ VS-12 (`@`) ditunda karena kamus data kita juga punya masalah yang sama (UC-02, 
 | Pengganti | pilih satu dari Opsi A (VS-14), B (VS-16), atau C (VS-06) |
 
 Catatan: VS-10, VS-13, dan VS-15 juga terjadi di kamus data kita (bagian 5). Bedanya, perbaikannya sudah tercatat di UC-01 dan RV-M05-12/14/16. Kalau ingin aman total, ganti juga salah satunya dengan opsi yang tersisa.
+
+---
+
+## 7. Isian Tabel Temuan (versi singkat, siap salin)
+
+Format Lampiran C. Bahasa dibuat singkat dan mudah dipahami.
+
+### 4 item yang dipakai
+
+| ID | Artefak | Lokasi | Jenis | Deskripsi Berbasis Bukti | Severitas | Rekomendasi | Status |
+|---|---|---|---|---|---|---|---|
+| VS-10 | M05 | Inventaris Data | Kelengkapan | Panah dari/ke data store di DFD tidak ada di inventaris. Ada 15 panah store, tidak satu pun tercatat. | Tinggi | Beri nama panah store di DFD, lalu masukkan ke inventaris. | Open |
+| VS-13 | M05 | pengajuanPeminjaman, buktiPeminjaman, Data Transaksi | Konsistensi struktur | Jumlah buku per pinjam berbeda-beda: aturan bilang 1 buku, bukti `{KodeBuku}` (banyak), store `1{KodeBuku}5` (1–5). | Tinggi | Tentukan satu batas jumlah buku, pakai sama di semua struktur. | Open |
+| VS-15 | M05 | StatusAnggota, StatusKeanggotaan, IDTransaksi, IDPeminjaman, NoIdentitas | Sinonim | Satu hal punya beberapa nama: StatusAnggota vs StatusKeanggotaan, IDTransaksi vs IDPeminjaman. Asal IDAnggota dari NoIdentitas tidak dijelaskan. | Tinggi | Pilih satu nama per hal, nama lain jadi alias. Jelaskan asal IDAnggota. | Open |
+| VS-17 | M05 | Tabel elemen: NoTelepon, TanggalJatuhTempo | Contoh vs aturan | Contoh tidak sesuai aturannya: NoTelepon wajib awalan 08 tapi contoh `81234567890`; jatuh tempo 7 hari kerja tapi contoh 19→26 Okt (7 hari biasa, seharusnya 28 Okt). | Sedang | Samakan contoh dengan aturan, atau ubah aturannya. | Open |
+
+### Pilih satu pengganti VS-12
+
+| ID | Artefak | Lokasi | Jenis | Deskripsi Berbasis Bukti | Severitas | Rekomendasi | Status |
+|---|---|---|---|---|---|---|---|
+| VS-14 | M05 | Penguraian hari, bulan, tahun, Pengarang | Notasi | Pilihan ditulis pakai `{}` (artinya berulang), contoh `hari = {1 \| 2 \| ... \| 31}`. Seharusnya `[]`. `Pengarang = 1{huruf}3` berarti nama cuma 1–3 huruf. | Sedang | Pakai `[]` untuk pilihan. Pengarang ditulis `1{karakter}50`. | Open |
+| VS-16 | M05 | NamaDepan, NamaBelakang, TotalDenda, tahun | Domain beda | Elemen yang sama ditulis beda: NamaDepan 20 vs 30 huruf, NamaBelakang wajib vs opsional, TotalDenda 6 vs 8 digit, tahun mulai 2025 vs 2023. | Sedang | Tulis definisi sekali di tabel elemen, yang lain cukup merujuk. | Open |
+| VS-06 | M04 | DFD L1 Proses 3: aliran 3.3 → 3.4 | Penamaan | Nama `triggerStatusBuku` menggambarkan aksi/pemicu, padahal isinya data status buku. Nama aliran harus kata benda. | Sedang | Ganti jadi `statusBukuKembali`. | Open |
