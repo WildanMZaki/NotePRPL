@@ -15,7 +15,9 @@ Teks pengganti lengkap per bagian dokumen, tinggal salin dan timpa. Perubahan ti
 | M02 Event Context | [siap-timpa/M02-event-context.md](siap-timpa/M02-event-context.md) |
 | M03 DFD Level 0 | [siap-timpa/M03-dfd-level0.md](siap-timpa/M03-dfd-level0.md) |
 | M04 DFD Decomposition | [siap-timpa/M04-dfd-decomposition.md](siap-timpa/M04-dfd-decomposition.md) |
-| M05 | belum (sedang diedit kelompok); kebutuhan dari M04/M06: [siap-timpa/KEBUTUHAN-DARI-M05.md](siap-timpa/KEBUTUHAN-DARI-M05.md) |
+| M05 (final) | revisi per bagian (sebut lokasi spesifik): [siap-timpa/M05-data-dictionary.md](siap-timpa/M05-data-dictionary.md) |
+| M06 pra-pengerjaan | hasil cek `updates/PRPL 6 FIX.pdf`: [siap-timpa/M06-cek-prapengerjaan.md](siap-timpa/M06-cek-prapengerjaan.md) |
+| M05 (lama) | sebelumnya belum (sedang diedit kelompok); kebutuhan dari M04/M06: [siap-timpa/KEBUTUHAN-DARI-M05.md](siap-timpa/KEBUTUHAN-DARI-M05.md) |
 | M06 | baca di [../m06/PROCESS_SPEC_M06.md](../m06/PROCESS_SPEC_M06.md); docx siap salin di `progress/PRPL_M06_2B_RajinBelajar_ProcessSpecification_draft.docx` (+ `_DecisionTable.xlsx`, `_DecisionTree_3.4.png`), dibangkitkan dari `generator/m06_data.py` |
 
 File per item (RV-M0x-nn) di bawah tetap disimpan sebagai rujukan alasan.
