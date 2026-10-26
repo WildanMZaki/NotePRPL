@@ -185,6 +185,60 @@ def tulis_xlsx():
     wb.save(F_XLSX)
 
 
+F_MD = os.path.join(ROOT, "manajemen", "m06", "PROCESS_SPEC_M06.md")
+
+
+def tulis_md():
+    """Versi baca-di-GitHub: isi sama dengan docx + catatan penyesuaian M05 per proses (tanpa NIM)."""
+    esc = lambda v: str(v).replace("|", "\\|").replace("\n", "<br>")
+
+    def tb(header, rows):
+        out = ["| " + " | ".join(header) + " |", "|" + "---|" * len(header)]
+        out += ["| " + " | ".join(esc(c) for c in r) + " |" for r in rows]
+        return "\n".join(out) + "\n"
+
+    L = [f"# Process Specification M06 — Draft v{VERSI} ({TANGGAL})\n",
+         "Isi sama dengan `progress/PRPL_M06_2B_RajinBelajar_ProcessSpecification_draft.docx` (dibangkitkan dari `generator/m06_data.py`). "
+         "Bagian **Catatan penyesuaian M05** di bawah tiap proses hanya ada di file ini, bukan di docx.\n",
+         "## Menginventarisasi Proses Primitif\n",
+         tb(["No. Proses", "Nama Proses", "Input", "Output", "Store Dibaca atau Ditulis", "Event Terkait", "Bentuk Logika"], INVENTARIS),
+         INDUK + "\n", "## Parameter dan Aturan Bisnis\n", tb(["Parameter", "Nilai", "Sumber"], PARAMETER),
+         tb(["ID", "Aturan Bisnis", "Sumber"], ATURAN), "## Memilih Bentuk Logika\n",
+         tb(["No. Proses", "Karakter Logika", "Bentuk Logika", "Alasan Pemilihan"], TEKNIK), "## Menulis Process Specification\n"]
+    for s in SPEC:
+        L.append(f"### Proses {s['no']} {s['nama']}\n")
+        L.append(tb(["Elemen", "Isi"], [
+            ("Nomor dan nama proses", f"{s['no']} {s['nama']}"), ("Tujuan", s["tujuan"]), ("Input", s["input"]),
+            ("Output", s["output"]), ("Data store dibaca", s["baca"]), ("Data store ditulis", s["tulis"]),
+            ("Precondition", s["pre"]), ("Postcondition", s["post"]), ("Aturan bisnis", s["aturan"]),
+            ("Exception", s["exc"]), ("Referensi data", s["ref"]), ("Bentuk logika dan alasan", s["bentuk"])]))
+        L.append("**Structured English**\n\n```\n" + s["se"] + "\n```\n")
+        for d in DT:
+            if (s["no"] == "1" and d["id"] == "DT-1") or (s["no"] == "3.1" and d["id"] == "DT-2"):
+                rows = [(k,) + tuple(v) for k, v in d["kondisi"]] + [(a,) + tuple(v) for a, v in d["tindakan"]]
+                rows.append(("Keterangan gagal",) + tuple(d["ket"]))
+                L.append(f"**{d['judul']}**\n\n" + tb(["Kondisi atau Tindakan"] + d["kolom"], rows))
+                L.append("Pemeriksaan kelengkapan: " + d["cek"] + "\n")
+        if s["no"] == "3.4":
+            L.append(f"**{DTREE['judul']}** (gambar: `progress/PRPL_M06_2B_RajinBelajar_DecisionTree_3.4.png`)\n")
+            L.append(tb(["Urutan", "Pertanyaan", "Bila Tidak", "Bila Ya"],
+                        [(i, q, h, "lanjut" if i < len(DTREE["langkah"]) else DTREE["berhasil"])
+                         for i, (q, _, h) in enumerate(DTREE["langkah"], 1)]))
+        cat = M05_CATATAN.get(s["no"], [])
+        if cat:
+            L.append("> **Catatan penyesuaian M05** (dicek terhadap `updates/` M05 2026-10-26 22:28)\n>\n"
+                     + "\n".join(f"> - {c}" for c in cat) + "\n")
+    L += ["## Memvalidasi dengan Contoh Uji\n", "Tanggal hari ini pada semua kasus uji = 2026-10-26 (Senin).\n",
+          tb(["ID Uji", "Proses", "Aturan atau Jalur", "Data Uji", "Hasil yang Diharapkan", "Hasil Penelusuran", "Status", "Temuan"], UJI),
+          "## Traceability Review\n",
+          tb(["Event ID", "Process ID", "Input atau Output", "Entri Kamus Data", "Aturan Bisnis", "Kasus Uji", "Status"], TRACE),
+          "## Revision History\n", tb(["Versi", "Tanggal", "Artefak atau Bagian", "Perubahan", "Alasan", "Penyusun", "Reviewer"], REVISI),
+          "## Pertanyaan Refleksi\n"]
+    L += [f"{i}. **{q}**\n   {a}\n" for i, (q, a) in enumerate(REFLEKSI, 1)]
+    os.makedirs(os.path.dirname(F_MD), exist_ok=True)
+    open(F_MD, "w", encoding="utf8").write("\n".join(L))
+
+
 if __name__ == "__main__":
-    gambar_tree(); tulis_docx(); tulis_xlsx()
-    print("Ditulis:\n ", F_DOCX, "\n ", F_XLSX, "\n ", F_TREE)
+    gambar_tree(); tulis_docx(); tulis_xlsx(); tulis_md()
+    print("Ditulis:\n ", F_DOCX, "\n ", F_XLSX, "\n ", F_TREE, "\n ", F_MD)

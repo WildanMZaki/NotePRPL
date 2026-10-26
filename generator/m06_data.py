@@ -617,3 +617,52 @@ REFLEKSI = [
     ("Bagaimana process specification membantu transisi dari analisis kebutuhan menuju desain dan pengujian?",
      "Process specification mengubah aturan bisnis dari event table dan kamus data menjadi langkah logika yang pasti, sehingga perancang tahu urutan validasi dan data yang dibaca atau ditulis. Setiap aturan pada decision table dan setiap cabang decision tree langsung menjadi kasus uji, dan domain elemen dari kamus data memberi nilai batas serta contoh tidak valid untuk pengujian."),
 ]
+
+# ---------------------------------------------------------------------------
+# CATATAN PENYESUAIAN KE M05 (dicek terhadap updates/ M05 2026-10-26 22:28)
+# Hanya ditampilkan di versi .md, tidak masuk docx.
+# ---------------------------------------------------------------------------
+M05_CATATAN = {
+    "1": [
+        "Arus `dataAnggota` di entri D1 baru satu arah (Proses 1 -> D1). Tambahkan D1 -> Proses 1 (baca) untuk cek NIM/NIP sudah terdaftar dan EV-09.",
+        "`statusPendaftaran` belum punya struktur. Usulan: `statusPendaftaran = StatusHasil + NoIdentitas + (TanggalDaftar) + (KeteranganGagal)`.",
+        "`statusKeaktifan` dari Sistem Akademik perlu nilai Tidak Terdaftar: `statusKeaktifan = NoIdentitas + [Aktif | Nonaktif | Tidak Terdaftar]`.",
+        "D1 memuat `Jurusan` dan `TipeAnggota`, tetapi `dataPendaftaran` tidak mengirimnya. Tambahkan keduanya ke `dataPendaftaran`, atau hapus dari D1.",
+    ],
+    "2.1": [
+        "`dataPencarian` belum punya struktur. Usulan: `dataPencarian = KataKunci`, `KataKunci = 1{karakter}100`.",
+        "Hapus entri `infoKatalog/Ketersediaan` (inventaris no 7, entri komposit, penguraian). Di DFD sudah menjadi `informasiKoleksiBuku`.",
+    ],
+    "2.2": [
+        "Tambahkan `JenisPerubahan = [Tambah | Ubah | Hapus]` ke `dataKoleksiBaru`.",
+        "Entri baru `statusPengelolaanKoleksi = StatusHasil + KodeBuku + (KeteranganGagal)`, arus Proses 2 / 2.2 -> Petugas Perpustakaan (juga di inventaris).",
+        "Format `KodeEksemplar` bentrok: penguraian `KodeBuku + \"-\" + 1{angka}3`, tabel elemen `SIL-BK-0012`. Pilih satu.",
+    ],
+    "3.1": [
+        "`dataTransaksiPeminjaman` usulan: `NoIdentitas + 1{KodeEksemplar}3`. KodeBuku diganti KodeEksemplar (yang dipinjam eksemplar fisik); TanggalPinjam, TanggalJatuhTempo dihitung sistem; IDPetugas tidak dipakai proses mana pun.",
+        "`peminjamAktif`: tujuan + Proses 3.1 dan 3.3; struktur usulan `NoIdentitas + {IDTransaksi + KodeEksemplar + TanggalJatuhTempo + StatusTransaksi + StatusDenda + TotalDenda + JumlahPerpanjangan}`.",
+        "D3: tambahkan `StatusDenda`, `JumlahPerpanjangan`, `TanggalBayar` ke record; nama store `D3 Data Transaksi` → `D3 Transaksi Fisik` (sama dengan DFD).",
+        "Entri baru `dataPeminjamanBaru = IDTransaksi + NoIdentitas + KodeEksemplar + TanggalPinjam + TanggalJatuhTempo + StatusTransaksi + StatusDenda + JumlahPerpanjangan` (3.1 -> D3).",
+        "`statusTransaksiDanBukti` memakai `StatusTransaksi = [Berhasil | Gagal]`, bentrok dengan `StatusTransaksi = [Aktif | Selesai | Terlambat]` di D3. Ganti jadi `StatusHasil` dan tambahkan `(KeteranganGagal)`.",
+    ],
+    "3.2": [
+        "`dataTransaksiPengembalian` usulan: `1{KodeEksemplar + KondisiBuku}3`. NoIdentitas dibaca dari peminjamAktif; TanggalKembali tanggal sistem.",
+        "`StatusEksemplar` punya tiga domain berbeda. Satukan: `[Tersedia | Dipinjam | Rusak | Hilang]`.",
+        "Entri baru `pembaruanPengembalian = IDTransaksi + TanggalKembali + StatusTransaksi` (3.2 -> D3).",
+    ],
+    "3.3": [
+        "`catatanDenda` masih terbalik (Proses -> Petugas, isi rincian denda). Seharusnya Petugas -> 3.3: `catatanDenda = IDTransaksi + JumlahDibayar + TanggalBayar`.",
+        "`StatusDenda` punya dua domain. Satukan: `[Tanpa Denda | Belum Lunas | Lunas]`; `StatusPembayaran` di `buktiPengembalianDanDenda` ganti `StatusDenda`.",
+        "Entri baru `dataDenda = IDTransaksi + JumlahHariTerlambat + TotalDenda + StatusDenda + (TanggalBayar)` (3.3 -> D3).",
+    ],
+    "3.4": [
+        "`permintaanPerpanjangan` usulan: `NoIdentitas + IDTransaksi` (sekarang KodeBuku + TanggalPengajuan, tidak bisa menunjuk transaksi yang mana).",
+        "Elemen `JumlahPerpanjangan = 1{angka}1` (0–2) belum ada.",
+        "Entri baru `pembaruanMasaPinjam = IDTransaksi + TanggalJatuhTempo + JumlahPerpanjangan` (3.4 -> D3).",
+        "`statusPerpanjangan` belum punya struktur. Usulan: `StatusHasil + IDTransaksi + (TanggalJatuhTempo) + (KeteranganGagal)`.",
+    ],
+    "4": [
+        "`permintaanLaporan` belum punya struktur. Usulan: `permintaanLaporan = Periode` (Periode sudah didefinisikan di laporanBulanan).",
+        "Tidak ada blocker lain: dataTransaksi, dataKoleksi, laporanBulanan sudah cukup; KodeBuku bisa diambil dari KodeEksemplar (format baru KodeBuku-nnn).",
+    ],
+}

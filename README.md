@@ -5,6 +5,7 @@ Catatan kerja tugas bertahap PRPL (Polban D3 TI) untuk studi kasus SILAPUS. Repo
 | File | Isi |
 |---|---|
 | [URGENT_CHANGES.md](URGENT_CHANGES.md) | **Perubahan mendesak** yang harus segera diterapkan (UC-xx) |
+| [m06/PROCESS_SPEC_M06.md](m06/PROCESS_SPEC_M06.md) | **Draft M06** (process spec, decision table/tree, paket uji, traceability) + catatan penyesuaian M05 per proses |
 | [BACKLOG.md](BACKLOG.md) | To-do & status per modul |
 | [revisions-recommendations/](revisions-recommendations/README.md) | **Teks siap timpa M01–M04** (`siap-timpa/`) + rekomendasi per item |
 | [BASELINE_PENAMAAN.md](BASELINE_PENAMAAN.md) | Nama resmi proses, flow, store. Cek di sini sebelum menulis nama apa pun |
