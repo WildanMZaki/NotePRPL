@@ -5,6 +5,21 @@ Rujukan audit asal (AUD-xx) ada di [`../AUDIT_BALANCING.md`](../AUDIT_BALANCING.
 
 **Cara pakai:** centang `[x]` kalau sudah diterapkan di dokumen, isi kolom PIC di tabel di bawah, lalu commit. Rename apa pun tetap ikut alur `BASELINE_PENAMAAN.md` → `TEMUAN_DAN_REVISI.md` → artefak.
 
+## Siap Timpa (2026-10-26) — pakai ini dulu
+
+Teks pengganti lengkap per bagian dokumen, tinggal salin dan timpa. Perubahan tiap bagian ada di "Catatan Perubahan" di bawah masing-masing file.
+
+| Modul | File |
+|---|---|
+| M01 Project Charter | [siap-timpa/M01-charter.md](siap-timpa/M01-charter.md) |
+| M02 Event Context | [siap-timpa/M02-event-context.md](siap-timpa/M02-event-context.md) |
+| M03 DFD Level 0 | [siap-timpa/M03-dfd-level0.md](siap-timpa/M03-dfd-level0.md) |
+| M04 DFD Decomposition | [siap-timpa/M04-dfd-decomposition.md](siap-timpa/M04-dfd-decomposition.md) |
+| M05 | belum (sedang diedit kelompok); kebutuhan dari M04/M06: [siap-timpa/KEBUTUHAN-DARI-M05.md](siap-timpa/KEBUTUHAN-DARI-M05.md) |
+| M06 | draft lengkap di `progress/PRPL_M06_2B_RajinBelajar_ProcessSpecification_draft.docx` (+ `_DecisionTable.xlsx`, `_DecisionTree_3.4.png`), dibangkitkan dari `generator/m06_data.py` |
+
+File per item (RV-M0x-nn) di bawah tetap disimpan sebagai rujukan alasan.
+
 ## Tracker
 
 | Modul | File | Item | P1 | P2 | P3 | PIC | Status |

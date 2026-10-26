@@ -46,6 +46,10 @@ Respons mengikuti Modul 4 §3.5: **Diterima / Ditolak (dengan alasan) / Perlu kl
 | - | 2026-10-21 | `AUDIT_BALANCING.md` | Audit lintas modul M01–M05: 8 temuan event↔CD, 10 temuan CD↔L0↔L1, 6 temuan kamus data, 6 temuan dokumen M04 + rencana 3 fase | Penugasan Wildan | Wildan (dibantu AI) | _belum_ |
 | - | 2026-10-21 | `validasi-silang/PRPL_2B_RajinBelajar_ValidasiSilang_Kelompok4_M04-M05.docx` | Validasi silang M04 + M05 Kelompok 4: 23 temuan (7 Tinggi, 11 Sedang, 5 Rendah) | Tugas validasi silang | Wildan (dibantu AI) | _belum_ |
 
+| 0.3 | 2026-10-26 | `Silapus Latest.bpm` | `dataAnggota` dua arah; `peminjamAktif` D3 → 3.1 & 3.3; `dataKoleksiBuku` di 2.2 dua arah; aliran baru `statusPengelolaanKoleksi` (L0 + L1-P2 + CD); Proses 4 → Membuat Laporan Sirkulasi. Backup: `_backup/Silapus Latest - sebelum M06 prep 2026-10-26.bpm` | AUD-B-07, B-08, B-09, B-11, B-12; data yang dibutuhkan process spec M06 | Wildan (dibantu AI) | _belum_ |
+| - | 2026-10-26 | `revisions-recommendations/siap-timpa/` M01–M04 | Teks pengganti lengkap per bagian + catatan perubahan | Permintaan: revisi langsung timpa, fokus balancing | Wildan (dibantu AI) | _belum_ |
+| 0.1 | 2026-10-26 | M06 draft (`progress/`) | 8 process spec, DT-1, DT-2, DTree-1, 41 kasus uji, traceability | Modul 6 | Wildan (dibantu AI) | _belum_ |
+
 ### Detail REV-2026-10-19 (`SILAPUS wildan.bpm`)
 
 Backup sebelum merge: `_backup/SILAPUS wildan - sebelum merge 2026-10-19.bpm`

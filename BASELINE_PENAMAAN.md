@@ -50,7 +50,7 @@ Catatan: nama flow camelCase diambil dari perubahan Irfan (Level 0) dan Rere (Le
 | 3.2 | Memproses Pengembalian Buku | Ya |
 | 3.3 | Menghitung dan Mencatat Denda | Ya |
 | 3.4 | Memperpanjang Peminjaman | Ya |
-| 4 | Membuat Laporan Transaksi Fisik | Ya (lihat BL-DFD-05 soal nama) |
+| 4 | Membuat Laporan Sirkulasi | Ya |
 
 Proses primitif untuk M06: **1, 2.1, 2.2, 3.1, 3.2, 3.3, 3.4, 4** (8 process spec).
 
@@ -62,10 +62,11 @@ Proses primitif untuk M06: **1, 2.1, 2.2, 3.1, 3.2, 3.3, 3.4, 4** (8 process spe
 | statusPendaftaran | 1 → Anggota Perpustakaan |
 | dataVerifikasi | 1 → Sistem Akademik |
 | statusKeaktifan | Sistem Akademik → 1 |
-| dataAnggota | 1 → D1 (tulis) |
+| dataAnggota | D1 ↔ 1 (baca + tulis) |
 | dataPencarian | Anggota Perpustakaan → 2 |
 | informasiKoleksiBuku | 2 → Anggota Perpustakaan |
 | dataKoleksiBaru | Petugas Perpustakaan → 2 |
+| statusPengelolaanKoleksi | 2 → Petugas Perpustakaan |
 | dataKoleksiBuku | D2 ↔ 2 (baca + tulis) |
 | permintaanPerpanjangan | Anggota Perpustakaan → 3 |
 | statusPerpanjangan | 3 → Anggota Perpustakaan |
@@ -91,7 +92,8 @@ Proses primitif untuk M06: **1, 2.1, 2.2, 3.1, 3.2, 3.3, 3.4, 4** (8 process spe
 | informasiKoleksiBuku | 2.1 → Anggota Perpustakaan | sama |
 | dataKoleksiBuku | D2 → 2.1 (baca) | sisi baca `dataKoleksiBuku` |
 | dataKoleksiBaru | Petugas Perpustakaan → 2.2 | sama |
-| dataKoleksiBuku | 2.2 → D2 (tulis) | sisi tulis `dataKoleksiBuku` |
+| statusPengelolaanKoleksi | 2.2 → Petugas Perpustakaan | sama |
+| dataKoleksiBuku | D2 ↔ 2.2 (baca + tulis) | sisi baca & tulis `dataKoleksiBuku` |
 
 ## Aliran Data — DFD Level 1 Proses 3
 
@@ -108,7 +110,7 @@ Proses primitif untuk M06: **1, 2.1, 2.2, 3.1, 3.2, 3.3, 3.4, 4** (8 process spe
 | statusAnggota | D1 → 3.1, D1 → 3.4 (baca) | sama |
 | dataEksemplar | D2 → 3.1 (baca) | sama |
 | pembaruanEksemplar | 3.1 → D2, 3.2 → D2 (tulis) | sama |
-| peminjamAktif | D3 → 3.2, D3 → 3.4 (baca) | sama |
+| peminjamAktif | D3 → 3.1, 3.2, 3.3, 3.4 (baca) | sama |
 | dataPeminjamanBaru | 3.1 → D3 (tulis) | komponen `dataPeminjaman`** |
 | pembaruanPengembalian | 3.2 → D3 (tulis) | komponen `dataPeminjaman`** |
 | dataDenda | 3.3 → D3 (tulis) | komponen `dataPeminjaman`** |
@@ -120,4 +122,4 @@ Proses primitif untuk M06: **1, 2.1, 2.2, 3.1, 3.2, 3.3, 3.4, 4** (8 process spe
 
 Tanpa dua definisi itu, matriks balancing baris terkait **tidak sah** (Modul 4 §1.4). Status: sudah didefinisikan di kamus data v0.2 (2026-10-21).
 
-**Usulan perubahan (belum diterapkan, AUD-B-07):** tambah `peminjamAktif` D3 → 3.1 (baca) agar aturan kuota & denda pada peminjaman punya sumber data. Balance tetap aman karena Level 0 sudah punya `peminjamAktif` D3 → 3.
+**Perubahan 2026-10-26 (sudah diterapkan di `.bpm`):** `peminjamAktif` D3 → 3.1 dan D3 → 3.3 (AUD-B-07, AUD-B-11); `dataAnggota` dua arah (AUD-B-08); Proses 4 = Membuat Laporan Sirkulasi; `dataKoleksiBuku` di 2.2 dua arah (cek KodeBuku unik); aliran baru `statusPengelolaanKoleksi` 2/2.2 → Petugas (jalur hasil EV-08, AUD-B-12) yang juga ditambahkan di Context Diagram.
