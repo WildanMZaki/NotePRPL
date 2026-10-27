@@ -199,7 +199,8 @@ def tulis_md():
 
     L = [f"# Process Specification M06 — Draft v{VERSI} ({TANGGAL})\n",
          "Isi sama dengan `progress/PRPL_M06_2B_RajinBelajar_ProcessSpecification_draft.docx` (dibangkitkan dari `generator/m06_data.py`). "
-         "Bagian **Catatan penyesuaian M05** di bawah tiap proses hanya ada di file ini, bukan di docx.\n",
+         + ("Bagian **Catatan penyesuaian M05** di bawah tiap proses hanya ada di file ini, bukan di docx.\n" if M05_CATATAN
+          else "Semua nama elemen sudah sesuai M05 di `updates/` (disesuaikan 2026-10-27).\n"),
          "## Menginventarisasi Proses Primitif\n",
          tb(["No. Proses", "Nama Proses", "Input", "Output", "Store Dibaca atau Ditulis", "Event Terkait", "Bentuk Logika"], INVENTARIS),
          INDUK + "\n", "## Parameter dan Aturan Bisnis\n", tb(["Parameter", "Nilai", "Sumber"], PARAMETER),

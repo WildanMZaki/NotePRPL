@@ -1,5 +1,7 @@
 # M05 — Kamus Data (Revisi per Bagian)
 
+> **Status 2026-10-27: sudah diterapkan langsung ke `updates/PRPL_M05_2B_RajinBelajar_DataDictionary.docx`** (asli di `_backup/`). Penyimpangan dari daftar di bawah: `statusKeaktifan` dijadikan Komposit (`NoIdentitas + StatusAkademik`) karena EV-09 butuh NoIdentitas; `TotalDenda` di laporan diganti `TotalDendaBulanan` (homonim); `Judul` disatukan jadi `JudulBuku`; Null & Sumber ditulis di kolom Domain (tabel elemen tetap 6 kolom).
+
 Sumber: `updates/PRPL_M05_2B_RajinBelajar_DataDictionary.pdf` (final, 2026-10-26 22:44, 53 halaman).
 Dokumen terlalu panjang untuk ditulis ulang. File ini hanya menyebut **bagian yang harus diubah**: nomor baris inventaris, nomor entri komposit (No. di "Daftar Entry Komposit"), dan nomor penguraian (No. di "Menguraikan Struktur Data"). Penomoran entri dan penguraian di dokumen sama (1–24).
 

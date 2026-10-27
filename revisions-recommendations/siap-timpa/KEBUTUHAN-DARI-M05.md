@@ -1,5 +1,7 @@
 # Rekomendasi Perubahan M05 (Blocker M04 & M06)
 
+> **Status 2026-10-27: #1–#26 sudah diterapkan di `updates/` M05** (lihat `M05-data-dictionary.md`). File ini disimpan sebagai rujukan alasan.
+
 Bukan versi siap-timpa M05; M05 masih diedit kelompok. Isinya hanya perubahan yang **dibutuhkan M04 (matriks balancing) dan M06 (process spec)** supaya keduanya terlacak ke kamus data.
 
 Dicek terhadap: `updates/PRPL_M05_2B_RajinBelajar_DataDictionary.pdf` (2026-10-26 22:28).
